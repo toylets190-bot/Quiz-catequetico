@@ -160,22 +160,22 @@
     <button class="next-btn" id="nextBtn" onclick="nextQ()">AVANÇAR PARA A PRÓXIMA LUZ</button>
 </div>
 
-<audio id="bgMusic" loop src="https://www.chosic.com/wp-content/uploads/2021/07/The-Quest.mp3"></audio>
-<audio id="soundCorrect" src="https://www.fesliyanstudios.com/play-mp3/4386"></audio>
-<audio id="soundWrong" src="https://www.fesliyanstudios.com/play-mp3/4190"></audio>
+<audio id="bgMusic" loop src="https://cdn.pixabay.com/audio/2023/07/30/audio_e0908e8569.mp3"></audio>
+<audio id="soundCorrect" src="https://cdn.pixabay.com/audio/2025/10/06/audio_9b61cc485a.mp3"></audio>
+<audio id="soundWrong" src="https://cdn.pixabay.com/audio/2022/03/10/audio_6b59debae7.mp3"></audio>
 
 <script>
 const quizData = [
-    { q: "Qual o Sacramento que nos torna filhos de Deus?", a: ["Batismo", "Crisma", "Eucaristia", "Unção"], c: 0, img: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600" },
-    { q: "Quantos são os Mandamentos da Lei de Deus?", a: ["7", "10", "12", "5"], c: 1, img: "https://images.unsplash.com/photo-1507434965515-61970f2bd7c6?w=600" },
-    { q: "Quem é o Pai de Jesus na Terra?", a: ["São Pedro", "São Paulo", "São José", "São João"], c: 2, img: "https://images.unsplash.com/photo-1543362906-acfc16c67564?w=500" },
-    { q: "Qual a principal oração que Jesus nos ensinou?", a: ["Ave Maria", "Pai Nosso", "Credo", "Salve Rainha"], c: 1, img: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=500" },
-    { q: "Onde Jesus nasceu?", a: ["Nazaré", "Jerusalém", "Belém", "Roma"], c: 2, img: "https://images.unsplash.com/photo-1548625361-195fe57724e0?w=500" },
-    { q: "Quem é a Mãe de Jesus?", a: ["Maria Madalena", "Marta", "Maria", "Isabel"], c: 2, img: "https://images.unsplash.com/photo-1594752003058-005d0339a7b5?w=500" },
-    { q: "Quantos são os Sacramentos da Igreja?", a: ["3", "5", "7", "10"], c: 2, img: "https://images.unsplash.com/photo-1544927072-3ef01295db66?w=500" },
-    { q: "Qual o livro sagrado dos cristãos?", a: ["Alcorão", "Torá", "Bíblia", "Catecismo"], c: 2, img: "https://images.unsplash.com/photo-1504052434569-70ad58210444?w=500" },
-    { q: "Quem foi o primeiro Papa da Igreja?", a: ["São Paulo", "São João", "São Pedro", "São Tiago"], c: 2, img: "https://images.unsplash.com/photo-1554188248-986adbb73be4?w=500" },
-    { q: "O que celebramos na Páscoa?", a: ["Nascimento de Jesus", "Ressurreição de Jesus", "Morte de Jesus", "Batismo de Jesus"], c: 1, img: "https://images.unsplash.com/photo-1473186578172-c141e6798ee4?w=500" }
+    { q: "Qual o Sacramento que nos torna filhos de Deus?", a: ["Batismo", "Crisma", "Eucaristia", "Unção"], c: 0, img: "https://images.a12.com/source/files/c/248514/batismo-batizado-368531_1280-853-0-0.jpg" },
+    { q: "Quantos são os Mandamentos da Lei de Deus?", a: ["7", "10", "12", "5"], c: 1, img: "https://cms-imgp.jw-cdn.org/img/p/502018139/univ/art/502018139_univ_lsr_lg.jpg" },
+    { q: "Quem é o Pai de Jesus na Terra?", a: ["São Pedro", "São Paulo", "São José", "São João"], c: 2, img: "https://files.mormonsud.net/wp-content/uploads/2019/12/jose-e-maria-natal.jpg" },
+    { q: "Qual a principal oração que Jesus nos ensinou?", a: ["Ave Maria", "Pai Nosso", "Credo", "Salve Rainha"], c: 1, img: "https://revistaadventista.com.br/wp-content/uploads/a_oracao_modelo_credito_AdobeStock-1-810x540.jpg" },
+    { q: "Onde Jesus nasceu?", a: ["Nazaré", "Jerusalém", "Belém", "Roma"], c: 2, img: "https://img.freepik.com/vetores-gratis/presepio-da-silhueta-a-noite_52683-51309.jpg?semt=ais_hybrid&w=740&q=80" },
+    { q: "Quem é a Mãe de Jesus?", a: ["Maria Madalena", "Marta", "Maria", "Isabel"], c: 2, img: "https://diocesefranca.org.br/images/20221230092213_SAGRADA-FAMILIA.png" },
+    { q: "Quantos são os Sacramentos da Igreja?", a: ["3", "5", "7", "10"], c: 2, img: "https://saosebastiaopatos.com.br/wp-content/uploads/2024/01/50.reflita.png" },
+    { q: "Qual o livro sagrado dos cristãos?", a: ["Alcorão", "Torá", "Bíblia", "Catecismo"], c: 2, img: "https://i0.wp.com/ssvpcmbh.org.br/wp-content/uploads/2020/09/naom_562b8ba088c49.jpg?fit=1024%2C576&ssl=1" },
+    { q: "Quem foi o primeiro Papa da Igreja?", a: ["São Paulo", "São João", "São Pedro", "São Tiago"], c: 2, img: "https://cooperadoresdaverdade.com/wp-content/uploads/2020/05/O-que-%C3%A9-Patr%C3%ADstica.jpg" },
+    { q: "O que celebramos na Páscoa?", a: ["Nascimento de Jesus", "Ressurreição de Jesus", "Morte de Jesus", "Batismo de Jesus"], c: 1, img: "https://p2.trrsf.com/image/fget/cf/940/0/images.terra.com/2023/04/03/491447970-pascoa-origem-e-significado.jpg" }
 ];
 
 let current = 0, score = 0, answered = false, timeLeft = 10, timer;
@@ -271,3 +271,4 @@ function showResult() {
 </script>
 </body>
 </html>
+
