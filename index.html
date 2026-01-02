@@ -22,26 +22,30 @@
             align-items: center;
             justify-content: center;
             color: #333;
+            overflow-x: hidden;
         }
 
-        /* BOTÃO MUTE NO CANTO */
+        /* BOTÃO LIGAR/DESLIGAR SOM (FIXO NO CANTO) */
         #musicToggle {
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 2000;
-            background: rgba(0,0,0,0.6);
-            border: 1px solid var(--gold);
+            z-index: 9999;
+            background: var(--gold);
+            border: 2px solid white;
             color: white;
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: 0.3s;
         }
+        #musicToggle:hover { transform: scale(1.1); background: var(--gold-light); }
 
         #startScreen {
             position: fixed;
@@ -69,6 +73,7 @@
             transition: 0.4s;
             margin-top: 40px;
             border-radius: 4px;
+            box-shadow: 0 0 15px rgba(184, 134, 11, 0.4);
         }
 
         .btn-start:hover { transform: scale(1.05); background: var(--gold-light); color: var(--deep-night); }
@@ -83,7 +88,10 @@
             display: none;
             text-align: center;
             border-radius: 4px;
+            animation: fadeIn 0.5s ease-out;
         }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .stats { color: var(--gold); font-family: 'Cinzel'; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 15px; }
         .timer-container { width: 100%; height: 5px; background: #eee; margin-bottom: 25px; border-radius: 10px; overflow: hidden;}
@@ -102,7 +110,9 @@
             font-size: 1rem;
             font-family: 'Lora';
             border-radius: 4px;
+            transition: 0.2s;
         }
+        .answers button:hover:not(:disabled) { border-color: var(--gold); background: #fff; }
 
         .next-btn {
             background: var(--deep-night);
@@ -139,9 +149,9 @@
     </div>
     <div class="timer-container"><div id="timerBar"></div></div>
     <div class="image-frame"><img id="image" src=""></div>
-    <h2 id="question"></h2>
+    <h2 id="question" style="color:#111; font-size: 1.4rem;"></h2>
     <div class="answers" id="answers"></div>
-    <div id="feedback" style="margin-top: 20px; font-weight: bold;"></div>
+    <div id="feedback" style="margin-top: 20px; font-weight: bold; min-height: 1.2em;"></div>
     <button class="next-btn" id="nextBtn" onclick="nextQ()">AVANÇAR PARA A PRÓXIMA LUZ</button>
 </div>
 
@@ -165,7 +175,7 @@ const quizData = [
 
 let current = 0, score = 0, answered = false, timeLeft = 10, timer;
 
-// FUNÇÃO PARA EMBARALHAR
+// FUNÇÃO RANDOM (MISTURAR)
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -173,7 +183,7 @@ function shuffle(array) {
     }
 }
 
-// LIGAR/DESLIGAR MÚSICA
+// FUNÇÃO LIGAR/DESLIGAR MÚSICA
 function toggleMusic() {
     const bg = document.getElementById("bgMusic");
     const btn = document.getElementById("musicToggle");
@@ -182,14 +192,12 @@ function toggleMusic() {
 }
 
 function initGame() {
-    // 1. Embaralha as perguntas
+    // Ação de Embaralhar antes de começar
     shuffle(quizData);
-    
-    // 2. Embaralha as respostas de cada pergunta e mantém a correta
     quizData.forEach(item => {
-        let correctText = item.a[item.c];
+        let correctText = item.a[item.c]; 
         shuffle(item.a);
-        item.c = item.a.indexOf(correctText);
+        item.c = item.a.indexOf(correctText); 
     });
 
     document.getElementById("startScreen").style.display = "none";
@@ -271,28 +279,15 @@ function nextQ() {
 
 function showResult() {
     let title, msg, verse;
-    
-    if(score === 10) { 
-        title = "Mestre do Conhecimento"; 
-        msg = "Extraordinário! Você demonstrou pleno domínio sobre os fundamentos da nossa fé."; 
-        verse = "<b>'Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.' (Salmos 119:105)</b>"; 
-    }
-    else if(score >= 7) { 
-        title = "Discípulo da Verdade"; 
-        msg = "Excelente desempenho! Sua dedicação está dando ótimos frutos."; 
-        verse = "<b>'Crescei na graça e no conhecimento.' (2 Pedro 3:18)</b>"; 
-    }
-    else { 
-        title = "Caminhante da Fé"; 
-        msg = "Você está no caminho certo! Continue buscando a luz."; 
-        verse = "<b>'Buscai e achareis.' (Mateus 7:7)</b>"; 
-    }
+    if(score === 10) { title = "Mestre da Fé"; msg = "Incrível! Sua luz brilha intensamente."; verse = "Salmos 119:105"; }
+    else if(score >= 7) { title = "Discípulo"; msg = "Ótimo trabalho! Continue firme."; verse = "2 Pedro 3:18"; }
+    else { title = "Caminhante"; msg = "Continue estudando e buscando a luz."; verse = "Mateus 7:7"; }
 
     document.getElementById("quizBox").innerHTML = `
         <div class="result-title">${title}</div>
         <p style="font-size:1.2rem; margin:10px 0;">Você alcançou <b>${score} de 10</b> luzes.</p>
         <p style="line-height:1.5; color:#555;">${msg}</p>
-        <div class="result-verse">${verse}</div>
+        <div class="result-verse"><b>${verse}</b></div>
         
         <button class="btn-start" style="width:100%; background:#25d366; margin-bottom:10px;" onclick="shareResult()">
             📲 COMPARTILHAR NO WHATSAPP
@@ -303,9 +298,9 @@ function showResult() {
 }
 
 function shareResult() {
-    const text = `Fui aprovado no Mistério de Catequese Lux Lucet!\n💡 Acertei ${score} de 10 luzes.\nVenha testar seus conhecimentos também!`;
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + "\n" + window.location.href)}`;
-    window.open(whatsappUrl, '_blank');
+    const text = `✨ Lux Lucet ✨\nAlcancei o nível de sabedoria no Quiz de Catequese!\n💡 Acertei ${score} de 10 luzes.\nTeste seus conhecimentos aqui:`;
+    const url = window.location.href;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text + "\n" + url)}`, '_blank');
 }
 </script>
 </body>
