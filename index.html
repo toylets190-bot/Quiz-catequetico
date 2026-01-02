@@ -295,16 +295,36 @@ function showResult() {
         verse = "<b>'Buscai e achareis; batei e abrir-se-vos-á.' (Mateus 7:7)</b>"; 
     }
 
-    document.getElementById("quizBox").innerHTML = `
+   document.getElementById("quizBox").innerHTML = `
         <div class="result-title">${title}</div>
-        <p style="font-size:1.2rem; margin:10px 0;">Você alcançou <b>${score} de 10</b> luzes de sabedoria.</p>
+        <p style="font-size:1.2rem; margin:10px 0;">Você alcançou <b>${score} de 10</b> luzes.</p>
         <p style="line-height:1.5; color:#555;">${msg}</p>
-        <div class="result-verse" style="border-left-color: var(--gold); background: #f0f0f0;">${verse}</div>
-        <button class="btn-start" style="width:100%" onclick="location.reload()">REACENDER A CHAMA E ESTUDAR MAIS</button>
+        <div class="result-verse">${verse}</div>
+        
+        <button class="btn-start" style="width:100%; background:#25d366; margin-bottom:10px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);" onclick="shareResult()">
+            📲 COMPARTILHAR NO WHATSAPP
+        </button>
+
+        <button class="btn-start" style="width:100%" onclick="location.reload()">REACENDER A CHAMA</button>
     `;
 }
+function shareResult() {
+    let title = "";
+    if(score === 10) title = "Mestre do Conhecimento 🌟";
+    else if(score >= 7) title = "Discípulo da Verdade ✨";
+    else if(score >= 5) title = "Caminhante da Fé 🕊️";
+    else title = "Iniciante na Palavra 📖";
+
+    const text = `Fui aprovado no Mistério de Catequese Lux Lucet!\n\n🏆 Título: ${title}\n💡 Acertei ${score} de 10 luzes.\n\nVenha testar seus conhecimentos também!`;
+    const url = window.location.href; // Pega o link do seu site automaticamente
+    
+    // Link para abrir o WhatsApp com a mensagem
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + "\n" + url)}`;
+    window.open(whatsappUrl, '_blank');
+}
+
 </script>
 </body>
 </html>
 
-
+	
