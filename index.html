@@ -10,9 +10,7 @@
             --gold: #b8860b;
             --gold-light: #ffd700;
             --deep-night: #05070a;
-            --paper: #fdfdfd; /* O contraste claro */
-            --correct: #27ae60;
-            --wrong: #c0392b;
+            --paper: #fdfdfd;
         }
 
         body {
@@ -26,7 +24,25 @@
             color: #333;
         }
 
-        /* TELA INICIAL COM CONTRASTE */
+        /* BOTÃO MUTE NO CANTO */
+        #musicToggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--gold);
+            color: white;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         #startScreen {
             position: fixed;
             inset: 0;
@@ -40,12 +56,7 @@
             text-align: center;
         }
 
-        #startScreen h1 { 
-            font-family: 'Cinzel', serif; 
-            font-size: 3.5rem; 
-            margin: 0;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-        }
+        #startScreen h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; margin: 0; }
 
         .btn-start {
             background: var(--gold);
@@ -57,64 +68,40 @@
             cursor: pointer;
             transition: 0.4s;
             margin-top: 40px;
-            box-shadow: 0 0 15px rgba(184, 134, 11, 0.6);
+            border-radius: 4px;
         }
 
         .btn-start:hover { transform: scale(1.05); background: var(--gold-light); color: var(--deep-night); }
 
-        /* CONTAINER COM ALTO CONTRASTE (CLARO NO ESCURO) */
         .quiz-container {
             background: var(--paper);
             border-top: 10px solid var(--gold);
             padding: 40px;
             width: 90%;
             max-width: 480px;
-            box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
+            box-shadow: 0 0 60px rgba(0,0,0,0.8);
             display: none;
             text-align: center;
             border-radius: 4px;
         }
 
-        .stats { 
-            color: var(--gold); 
-            font-family: 'Cinzel'; 
-            font-weight: bold; 
-            margin-bottom: 15px; 
-            display: flex; 
-            justify-content: space-between;
-        }
-
+        .stats { color: var(--gold); font-family: 'Cinzel'; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 15px; }
         .timer-container { width: 100%; height: 5px; background: #eee; margin-bottom: 25px; border-radius: 10px; overflow: hidden;}
-        #timerBar { height: 100%; width: 100%; background: var(--gold); }
+        #timerBar { height: 100%; width: 100%; background: var(--gold); transition: width 0.1s linear; }
 
-        .image-frame { 
-            width: 100%; 
-            height: 220px; 
-            margin-bottom: 25px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            border: 5px solid white;
-        }
+        .image-frame { width: 100%; height: 220px; margin-bottom: 25px; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
         .image-frame img { width: 100%; height: 100%; object-fit: cover; }
-
-        h2 { font-size: 1.4rem; color: #111; margin-bottom: 20px; line-height: 1.4; }
 
         .answers { display: grid; gap: 12px; }
         .answers button {
             background: #f4f4f4;
             border: 1px solid #ddd;
             padding: 16px;
-            color: #222;
             cursor: pointer;
             text-align: left;
-            transition: 0.2s;
             font-size: 1rem;
             font-family: 'Lora';
-            font-weight: 500;
-        }
-        .answers button:hover:not(:disabled) { 
-            background: #fff; 
-            border-color: var(--gold); 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 4px;
         }
 
         .next-btn {
@@ -125,19 +112,17 @@
             width: 100%;
             margin-top: 25px;
             font-family: 'Cinzel';
-            font-weight: bold;
             display: none;
             cursor: pointer;
-            letter-spacing: 1px;
         }
 
-        #feedback { margin-top: 20px; font-weight: bold; font-size: 1.1rem; }
-        
         .result-title { font-family: 'Cinzel'; color: var(--gold); font-size: 2rem; }
         .result-verse { background: #f9f9f9; padding: 20px; border-left: 4px solid var(--gold); font-style: italic; margin: 20px 0; }
     </style>
 </head>
 <body>
+
+<button id="musicToggle" onclick="toggleMusic()">🔊</button>
 
 <div id="startScreen">
     <div style="border: 2px solid var(--gold); padding: 50px;">
@@ -156,7 +141,7 @@
     <div class="image-frame"><img id="image" src=""></div>
     <h2 id="question"></h2>
     <div class="answers" id="answers"></div>
-    <div id="feedback"></div>
+    <div id="feedback" style="margin-top: 20px; font-weight: bold;"></div>
     <button class="next-btn" id="nextBtn" onclick="nextQ()">AVANÇAR PARA A PRÓXIMA LUZ</button>
 </div>
 
@@ -177,6 +162,10 @@ const quizData = [
     { q: "Quem foi o primeiro Papa da Igreja?", a: ["São Paulo", "São João", "São Pedro", "São Tiago"], c: 2, img: "https://cooperadoresdaverdade.com/wp-content/uploads/2020/05/O-que-%C3%A9-Patr%C3%ADstica.jpg" },
     { q: "O que celebramos na Páscoa?", a: ["Nascimento de Jesus", "Ressurreição de Jesus", "Morte de Jesus", "Batismo de Jesus"], c: 1, img: "https://p2.trrsf.com/image/fget/cf/940/0/images.terra.com/2023/04/03/491447970-pascoa-origem-e-significado.jpg" }
 ];
+
+let current = 0, score = 0, answered = false, timeLeft = 10, timer;
+
+// FUNÇÃO PARA EMBARALHAR
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -184,22 +173,28 @@ function shuffle(array) {
     }
 }
 
-let current = 0, score = 0, answered = false, timeLeft = 10, timer;
+// LIGAR/DESLIGAR MÚSICA
+function toggleMusic() {
+    const bg = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicToggle");
+    bg.muted = !bg.muted;
+    btn.textContent = bg.muted ? "🔇" : "🔊";
+}
 
 function initGame() {
+    // 1. Embaralha as perguntas
+    shuffle(quizData);
+    
+    // 2. Embaralha as respostas de cada pergunta e mantém a correta
+    quizData.forEach(item => {
+        let correctText = item.a[item.c];
+        shuffle(item.a);
+        item.c = item.a.indexOf(correctText);
+    });
+
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("quizBox").style.display = "block";
     
-    // --- ESTE É O CÓDIGO DE RANDOM QUE VOCÊ DEVE INSERIR ---
-    shuffle(quizData); // Embaralha a ordem das perguntas
-
-    quizData.forEach(item => {
-        let correctText = item.a[item.c]; // Salva qual é a resposta certa
-        shuffle(item.a);                // Embaralha as alternativas
-        item.c = item.a.indexOf(correctText); // Reencontra onde a certa caiu
-    });
-    // -------------------------------------------------------
-
     const bg = document.getElementById("bgMusic");
     bg.volume = 0.15;
     bg.play().catch(() => {});
@@ -211,9 +206,11 @@ function loadQ() {
     document.getElementById("nextBtn").style.display = "none";
     document.getElementById("feedback").textContent = "";
     document.getElementById("progress").textContent = current + 1;
+    
     const item = quizData[current];
     document.getElementById("question").textContent = item.q;
     document.getElementById("image").src = item.img;
+    
     const btnBox = document.getElementById("answers");
     btnBox.innerHTML = "";
     item.a.forEach((text, i) => {
@@ -222,6 +219,7 @@ function loadQ() {
         b.onclick = () => check(i);
         btnBox.appendChild(b);
     });
+
     timeLeft = 10;
     clearInterval(timer);
     timer = setInterval(() => {
@@ -276,55 +274,39 @@ function showResult() {
     
     if(score === 10) { 
         title = "Mestre do Conhecimento"; 
-        msg = "Extraordinário! Você demonstrou pleno domínio sobre os fundamentos da nossa fé. Continue sendo luz!"; 
+        msg = "Extraordinário! Você demonstrou pleno domínio sobre os fundamentos da nossa fé."; 
         verse = "<b>'Lâmpada para os meus pés é a tua palavra e luz para o meu caminho.' (Salmos 119:105)</b>"; 
     }
     else if(score >= 7) { 
         title = "Discípulo da Verdade"; 
-        msg = "Excelente desempenho! Sua dedicação aos estudos da catequese está dando ótimos frutos. Continue firme!"; 
-        verse = "<b>'Crescei na graça e no conhecimento de nosso Senhor e Salvador Jesus Cristo.' (2 Pedro 3:18)</b>"; 
-    }
-    else if(score >= 5) { 
-        title = "Caminhante da Fé"; 
-        msg = "Você está no caminho certo! Já possui uma boa base, mas o estudo diário fará sua chama brilhar ainda mais."; 
-        verse = "<b>'Instrui o jovem no caminho em que deve andar, e até quando envelhecer não se desviará dele.' (Provérbios 22:6)</b>"; 
+        msg = "Excelente desempenho! Sua dedicação está dando ótimos frutos."; 
+        verse = "<b>'Crescei na graça e no conhecimento.' (2 Pedro 3:18)</b>"; 
     }
     else { 
-        title = "Iniciante na Palavra"; 
-        msg = "Todo grande santo começou com o primeiro passo. Aproveite para reler o catecismo e fortalecer sua base!"; 
-        verse = "<b>'Buscai e achareis; batei e abrir-se-vos-á.' (Mateus 7:7)</b>"; 
+        title = "Caminhante da Fé"; 
+        msg = "Você está no caminho certo! Continue buscando a luz."; 
+        verse = "<b>'Buscai e achareis.' (Mateus 7:7)</b>"; 
     }
 
-   document.getElementById("quizBox").innerHTML = `
+    document.getElementById("quizBox").innerHTML = `
         <div class="result-title">${title}</div>
         <p style="font-size:1.2rem; margin:10px 0;">Você alcançou <b>${score} de 10</b> luzes.</p>
         <p style="line-height:1.5; color:#555;">${msg}</p>
         <div class="result-verse">${verse}</div>
         
-        <button class="btn-start" style="width:100%; background:#25d366; margin-bottom:10px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);" onclick="shareResult()">
+        <button class="btn-start" style="width:100%; background:#25d366; margin-bottom:10px;" onclick="shareResult()">
             📲 COMPARTILHAR NO WHATSAPP
         </button>
 
         <button class="btn-start" style="width:100%" onclick="location.reload()">REACENDER A CHAMA</button>
     `;
 }
-function shareResult() {
-    let title = "";
-    if(score === 10) title = "Mestre do Conhecimento 🌟";
-    else if(score >= 7) title = "Discípulo da Verdade ✨";
-    else if(score >= 5) title = "Caminhante da Fé 🕊️";
-    else title = "Iniciante na Palavra 📖";
 
-    const text = `Fui aprovado no Mistério de Catequese Lux Lucet!\n\n🏆 Título: ${title}\n💡 Acertei ${score} de 10 luzes.\n\nVenha testar seus conhecimentos também!`;
-    const url = window.location.href; // Pega o link do seu site automaticamente
-    
-    // Link para abrir o WhatsApp com a mensagem
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + "\n" + url)}`;
+function shareResult() {
+    const text = `Fui aprovado no Mistério de Catequese Lux Lucet!\n💡 Acertei ${score} de 10 luzes.\nVenha testar seus conhecimentos também!`;
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + "\n" + window.location.href)}`;
     window.open(whatsappUrl, '_blank');
 }
-
 </script>
 </body>
 </html>
-
-	
