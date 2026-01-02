@@ -278,25 +278,48 @@ function nextQ() {
 }
 
 function showResult() {
-    let title, msg, verse;
-    if(score === 10) { title = "Mestre da Fé"; msg = "Incrível! Sua luz brilha intensamente."; verse = "Salmos 119:105"; }
-    else if(score >= 7) { title = "Discípulo"; msg = "Ótimo trabalho! Continue firme."; verse = "2 Pedro 3:18"; }
-    else { title = "Caminhante"; msg = "Continue estudando e buscando a luz."; verse = "Mateus 7:7"; }
+    let title, msg, verse, icon;
+    
+    if(score === 10) { 
+        title = "Mestre da Fé"; 
+        icon = "🌟";
+        msg = "Incrível! Sua luz brilha intensamente. Você demonstrou pleno domínio dos ensinamentos!"; 
+        verse = "Lâmpada para os meus pés é a tua palavra e luz para o meu caminho. (Salmos 119:105)"; 
+    }
+    else if(score >= 7) { 
+        title = "Discípulo da Verdade"; 
+        icon = "✨";
+        msg = "Excelente! Você está trilhando um caminho sólido de sabedoria. Continue firme!"; 
+        verse = "Crescei na graça e no conhecimento de nosso Senhor e Salvador Jesus Cristo. (2 Pedro 3:18)"; 
+    }
+    else { 
+        title = "Caminhante da Fé"; 
+        icon = "🕊️";
+        msg = "Cada passo conta! Você iniciou sua jornada. Continue estudando para fortalecer sua chama."; 
+        verse = "Pedi e dar-se-vos-á; buscai e achareis; batei e abrir-se-vos-á. (Mateus 7:7)"; 
+    }
 
     document.getElementById("quizBox").innerHTML = `
+        <div style="font-size: 3.5rem; margin-bottom: 5px;">${icon}</div>
         <div class="result-title">${title}</div>
-        <p style="font-size:1.2rem; margin:10px 0;">Você alcançou <b>${score} de 10</b> luzes.</p>
-        <p style="line-height:1.5; color:#555;">${msg}</p>
-        <div class="result-verse"><b>${verse}</b></div>
         
-        <button class="btn-start" style="width:100%; background:#25d366; margin-bottom:10px;" onclick="shareResult()">
-            📲 COMPARTILHAR NO WHATSAPP
+        <p style="font-size:1.1rem; margin:10px 0;">Você acendeu <b>${score} de 10</b> luzes.</p>
+        
+        <p style="line-height:1.4; color:#555; font-size: 0.95rem; margin-bottom: 15px;">${msg}</p>
+
+        <div style="background: #fdfdfd; padding: 12px; border: 1px solid #eee; border-left: 3px solid var(--gold); margin-bottom: 20px;">
+            <i style="font-size: 0.85rem; color: #666; display: block; line-height: 1.3;">"${verse}"</i>
+        </div>
+        
+        <button class="btn-start" style="width:100%; background:#25d366; color: white; margin-bottom: 10px; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="shareResult()">
+            📲 COMPARTILHAR JORNADA
         </button>
 
-        <button class="btn-start" style="width:100%" onclick="location.reload()">REACENDER A CHAMA</button>
+        <button class="btn-start" style="width:100%; background: #000; color: #ffffff !important; border: none;" onclick="location.reload()">
+            RECOMEÇAR CAMINHADA
+        </button>
     `;
 }
-
 function shareResult() {
     const text = `✨ Lux Lucet ✨\nAlcancei o nível de sabedoria no Quiz de Catequese!\n💡 Acertei ${score} de 10 luzes.\nTeste seus conhecimentos aqui:`;
     const url = window.location.href;
@@ -305,3 +328,4 @@ function shareResult() {
 </script>
 </body>
 </html>
+
