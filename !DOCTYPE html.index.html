@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catequese Viva - Luz e Vida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #b8860b;
+            --gold-light: #ffd700;
+            --deep-night: #05070a;
+            --paper: #fdfdfd; /* O contraste claro */
+            --correct: #27ae60;
+            --wrong: #c0392b;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Lora', serif;
+            background: radial-gradient(circle at center, #1a2533 0%, var(--deep-night) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        /* TELA INICIAL COM CONTRASTE */
+        #startScreen {
+            position: fixed;
+            inset: 0;
+            background: var(--deep-night);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            color: var(--gold-light);
+            text-align: center;
+        }
+
+        #startScreen h1 { 
+            font-family: 'Cinzel', serif; 
+            font-size: 3.5rem; 
+            margin: 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-start {
+            background: var(--gold);
+            color: white;
+            border: none;
+            padding: 20px 60px;
+            font-size: 1.2rem;
+            font-family: 'Cinzel', serif;
+            cursor: pointer;
+            transition: 0.4s;
+            margin-top: 40px;
+            box-shadow: 0 0 15px rgba(184, 134, 11, 0.6);
+        }
+
+        .btn-start:hover { transform: scale(1.05); background: var(--gold-light); color: var(--deep-night); }
+
+        /* CONTAINER COM ALTO CONTRASTE (CLARO NO ESCURO) */
+        .quiz-container {
+            background: var(--paper);
+            border-top: 10px solid var(--gold);
+            padding: 40px;
+            width: 90%;
+            max-width: 480px;
+            box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
+            display: none;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .stats { 
+            color: var(--gold); 
+            font-family: 'Cinzel'; 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            display: flex; 
+            justify-content: space-between;
+        }
+
+        .timer-container { width: 100%; height: 5px; background: #eee; margin-bottom: 25px; border-radius: 10px; overflow: hidden;}
+        #timerBar { height: 100%; width: 100%; background: var(--gold); }
+
+        .image-frame { 
+            width: 100%; 
+            height: 220px; 
+            margin-bottom: 25px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border: 5px solid white;
+        }
+        .image-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        h2 { font-size: 1.4rem; color: #111; margin-bottom: 20px; line-height: 1.4; }
+
+        .answers { display: grid; gap: 12px; }
+        .answers button {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 16px;
+            color: #222;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s;
+            font-size: 1rem;
+            font-family: 'Lora';
+            font-weight: 500;
+        }
+        .answers button:hover:not(:disabled) { 
+            background: #fff; 
+            border-color: var(--gold); 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .next-btn {
+            background: var(--deep-night);
+            color: white;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            margin-top: 25px;
+            font-family: 'Cinzel';
+            font-weight: bold;
+            display: none;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        #feedback { margin-top: 20px; font-weight: bold; font-size: 1.1rem; }
+        
+        .result-title { font-family: 'Cinzel'; color: var(--gold); font-size: 2rem; }
+        .result-verse { background: #f9f9f9; padding: 20px; border-left: 4px solid var(--gold); font-style: italic; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<div id="startScreen">
+    <div style="border: 2px solid var(--gold); padding: 50px;">
+        <h1>LUX LUCET</h1>
+        <p style="letter-spacing: 3px; opacity: 0.8;">A LUZ BRILHA NAS TREVAS</p>
+        <button class="btn-start" onclick="initGame()">ENTRAR NA LUZ</button>
+    </div>
+</div>
+
+<div class="quiz-container" id="quizBox">
+    <div class="stats">
+        <span>MISTÉRIO <span id="progress">1</span>/10</span>
+        <span>TEMPO: <span id="timeText">10</span>s</span>
+    </div>
+    <div class="timer-container"><div id="timerBar"></div></div>
+    <div class="image-frame"><img id="image" src=""></div>
+    <h2 id="question"></h2>
+    <div class="answers" id="answers"></div>
+    <div id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="nextQ()">AVANÇAR PARA A PRÓXIMA LUZ</button>
+</div>
+
+<audio id="bgMusic" loop src="https://www.chosic.com/wp-content/uploads/2021/07/The-Quest.mp3"></audio>
+<audio id="soundCorrect" src="https://www.fesliyanstudios.com/play-mp3/4386"></audio>
+<audio id="soundWrong" src="https://www.fesliyanstudios.com/play-mp3/4190"></audio>
+
+<script>
+const quizData = [
+    { q: "Qual o Sacramento que nos torna filhos de Deus?", a: ["Batismo", "Crisma", "Eucaristia", "Unção"], c: 0, img: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600" },
+    { q: "Quantos são os Mandamentos da Lei de Deus?", a: ["7", "10", "12", "5"], c: 1, img: "https://images.unsplash.com/photo-1507434965515-61970f2bd7c6?w=600" },
+    { q: "Quem é o Pai de Jesus na Terra?", a: ["São Pedro", "São Paulo", "São José", "São João"], c: 2, img: "https://images.unsplash.com/photo-1543362906-acfc16c67564?w=500" },
+    { q: "Qual a principal oração que Jesus nos ensinou?", a: ["Ave Maria", "Pai Nosso", "Credo", "Salve Rainha"], c: 1, img: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=500" },
+    { q: "Onde Jesus nasceu?", a: ["Nazaré", "Jerusalém", "Belém", "Roma"], c: 2, img: "https://images.unsplash.com/photo-1548625361-195fe57724e0?w=500" },
+    { q: "Quem é a Mãe de Jesus?", a: ["Maria Madalena", "Marta", "Maria", "Isabel"], c: 2, img: "https://images.unsplash.com/photo-1594752003058-005d0339a7b5?w=500" },
+    { q: "Quantos são os Sacramentos da Igreja?", a: ["3", "5", "7", "10"], c: 2, img: "https://images.unsplash.com/photo-1544927072-3ef01295db66?w=500" },
+    { q: "Qual o livro sagrado dos cristãos?", a: ["Alcorão", "Torá", "Bíblia", "Catecismo"], c: 2, img: "https://images.unsplash.com/photo-1504052434569-70ad58210444?w=500" },
+    { q: "Quem foi o primeiro Papa da Igreja?", a: ["São Paulo", "São João", "São Pedro", "São Tiago"], c: 2, img: "https://images.unsplash.com/photo-1554188248-986adbb73be4?w=500" },
+    { q: "O que celebramos na Páscoa?", a: ["Nascimento de Jesus", "Ressurreição de Jesus", "Morte de Jesus", "Batismo de Jesus"], c: 1, img: "https://images.unsplash.com/photo-1473186578172-c141e6798ee4?w=500" }
+];
+
+let current = 0, score = 0, answered = false, timeLeft = 10, timer;
+
+function initGame() {
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizBox").style.display = "block";
+    const bg = document.getElementById("bgMusic");
+    bg.volume = 0.15;
+    bg.play().catch(() => {});
+    loadQ();
+}
+
+function loadQ() {
+    answered = false;
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("progress").textContent = current + 1;
+    const item = quizData[current];
+    document.getElementById("question").textContent = item.q;
+    document.getElementById("image").src = item.img;
+    const btnBox = document.getElementById("answers");
+    btnBox.innerHTML = "";
+    item.a.forEach((text, i) => {
+        const b = document.createElement("button");
+        b.textContent = text;
+        b.onclick = () => check(i);
+        btnBox.appendChild(b);
+    });
+    timeLeft = 10;
+    clearInterval(timer);
+    timer = setInterval(() => {
+        timeLeft -= 0.1;
+        document.getElementById("timerBar").style.width = (timeLeft * 10) + "%";
+        document.getElementById("timeText").textContent = Math.ceil(timeLeft);
+        if(timeLeft <= 0) { clearInterval(timer); check(null); }
+    }, 100);
+}
+
+function check(idx) {
+    if(answered) return;
+    answered = true;
+    clearInterval(timer);
+    const item = quizData[current];
+    const btns = document.querySelectorAll(".answers button");
+    
+    btns.forEach((b, i) => {
+        b.disabled = true;
+        if(i === item.c) {
+            b.style.background = "#d4edda";
+            b.style.borderColor = "#28a745";
+            b.style.color = "#155724";
+        } else if(i === idx) {
+            b.style.background = "#f8d7da";
+            b.style.borderColor = "#dc3545";
+            b.style.color = "#721c24";
+        }
+    });
+
+    if(idx === item.c) {
+        score++;
+        document.getElementById("feedback").textContent = "✨ Luz da Verdade! Acertou.";
+        document.getElementById("feedback").style.color = "#28a745";
+        document.getElementById("soundCorrect").play();
+    } else {
+        document.getElementById("feedback").textContent = "🕊️ Busque a luz do conhecimento.";
+        document.getElementById("feedback").style.color = "#721c24";
+        document.getElementById("soundWrong").play();
+    }
+    document.getElementById("nextBtn").style.display = "block";
+}
+
+function nextQ() {
+    current++;
+    if(current < quizData.length) loadQ();
+    else showResult();
+}
+
+function showResult() {
+    let title, msg, verse;
+    if(score === 10) { title = "Luz Radiante"; msg = "Seu conhecimento brilha como o sol do meio-dia!"; verse = "'Vós sois a luz do mundo.' (Mateus 5:14)"; }
+    else if(score >= 7) { title = "Chama Ardente"; msg = "Você está no caminho certo da iluminação cristã."; verse = "'A tua palavra é lâmpada para os meus pés.' (Salmo 119:105)"; }
+    else { title = "Pequena Centelha"; msg = "Continue alimentando sua fé com o estudo."; verse = "'O Senhor é a minha luz e a minha salvação.' (Salmo 27:1)"; }
+
+    document.getElementById("quizBox").innerHTML = `
+        <div class="result-title">${title}</div>
+        <p style="font-size:1.2rem; margin:10px 0;">Você alcançou <b>${score} de 10</b> luzes.</p>
+        <p>${msg}</p>
+        <div class="result-verse">${verse}</div>
+        <button class="btn-start" style="width:100%" onclick="location.reload()">REACENDER A CHAMA</button>
+    `;
+}
+</script>
+</body>
+</html>
