@@ -1,331 +1,180 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catequese Viva - Luz e Vida</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gold: #b8860b;
-            --gold-light: #ffd700;
-            --deep-night: #05070a;
-            --paper: #fdfdfd;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ione Gonçalves Consultoria</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-        body {
-            margin: 0;
-            font-family: 'Lora', serif;
-            background: radial-gradient(circle at center, #1a2533 0%, var(--deep-night) 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #333;
-            overflow-x: hidden;
-        }
+<style>
+  /* RESET E BASE */
+  * {margin:0; padding:0; box-sizing:border-box;}
+  body, html {width:100%; font-family:'Arial', sans-serif; background:#f9f9f9; color:#333; overflow-x:hidden;}
+  
+  /* HEADER */
+  header {
+    width:100%; padding:15px 5%; display:flex; justify-content:space-between; align-items:center;
+    background:rgba(255,255,255,0.98); position:fixed; top:0; left:0; z-index:1000;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+  }
+  header img {height:60px;} /* Tamanho da Logo */
+  nav a {
+    margin-left:20px; text-decoration:none; font-size:16px; color:#333; font-weight:600; text-transform:uppercase;
+    transition:0.3s;
+  }
+  nav a:hover {color:#0056b3;}
 
-        /* BOTÃO LIGAR/DESLIGAR SOM (FIXO NO CANTO) */
-        #musicToggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            background: var(--gold);
-            border: 2px solid white;
-            color: white;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            transition: 0.3s;
-        }
-        #musicToggle:hover { transform: scale(1.1); background: var(--gold-light); }
+  /* HERO (CAPA) */
+  .hero {
+    height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center;
+    padding:0 20px;
+    /* DICA: Troque a URL abaixo por uma foto de fundo bonita (ex: prefeitura, escritório) */
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover; background-position: center;
+    color: white;
+  }
+  .hero h1 {font-size:3.5rem; font-weight:800; margin-bottom:20px;}
+  .hero p {font-size:1.4rem; max-width:800px; margin-bottom:40px;}
+  
+  .btn {
+    padding:15px 40px; font-size:1.1rem; border:none; background:#0056b3; color:#fff; cursor:pointer;
+    border-radius:5px; transition:.3s; text-decoration:none; font-weight:bold;
+  }
+  .btn:hover {background:#004494; transform:scale(1.05);}
 
-        #startScreen {
-            position: fixed;
-            inset: 0;
-            background: var(--deep-night);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            color: var(--gold-light);
-            text-align: center;
-        }
+  /* SEÇÕES GERAIS */
+  section {padding:80px 10%;}
+  h2 {font-size:2.5rem; margin-bottom:40px; color:#333; text-align:center; position:relative;}
+  h2::after {content:''; width:60px; height:3px; background:#0056b3; display:block; margin:10px auto;}
 
-        #startScreen h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; margin: 0; }
+  /* LAYOUT SOBRE (FOTO + TEXTO) */
+  .sobre-container {
+    display:flex; align-items:center; gap:50px; flex-wrap:wrap;
+  }
+  .sobre-img {
+    flex:1; min-width:300px;
+  }
+  .sobre-img img {
+    width:100%; border-radius:10px; box-shadow:0 15px 30px rgba(0,0,0,0.15);
+  }
+  .sobre-text {
+    flex:1; min-width:300px;
+  }
+  .sobre-text p {margin-bottom:15px; line-height:1.6; font-size:1.1rem; color:#555;}
 
-        .btn-start {
-            background: var(--gold);
-            color: white;
-            border: none;
-            padding: 20px 60px;
-            font-size: 1.2rem;
-            font-family: 'Cinzel', serif;
-            cursor: pointer;
-            transition: 0.4s;
-            margin-top: 40px;
-            border-radius: 4px;
-            box-shadow: 0 0 15px rgba(184, 134, 11, 0.4);
-        }
+  /* CARDS DE SERVIÇOS */
+  .servicos-grid {
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:30px;
+  }
+  .card {
+    background:white; padding:30px; border-radius:8px; box-shadow:0 5px 15px rgba(0,0,0,0.05);
+    text-align:center; transition:0.3s;
+  }
+  .card:hover {transform:translateY(-10px);}
+  .card i {font-size:40px; color:#0056b3; margin-bottom:20px;}
+  .card h3 {margin-bottom:15px; font-size:1.4rem;}
+  .card p {font-size:0.95rem; color:#666; line-height:1.5;}
 
-        .btn-start:hover { transform: scale(1.05); background: var(--gold-light); color: var(--deep-night); }
+  /* CONTATO */
+  .contato-container {text-align:center;}
+  .contato-btn {
+    display:inline-block; margin-top:20px; padding:15px 30px; 
+    background:#25D366; color:white; text-decoration:none; 
+    border-radius:50px; font-weight:bold; font-size:1.2rem;
+  }
 
-        .quiz-container {
-            background: var(--paper);
-            border-top: 10px solid var(--gold);
-            padding: 40px;
-            width: 90%;
-            max-width: 480px;
-            box-shadow: 0 0 60px rgba(0,0,0,0.8);
-            display: none;
-            text-align: center;
-            border-radius: 4px;
-            animation: fadeIn 0.5s ease-out;
-        }
+  /* FOOTER */
+  footer {padding:30px; text-align:center; background:#333; color:#aaa; font-size:0.9rem;}
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .stats { color: var(--gold); font-family: 'Cinzel'; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 15px; }
-        .timer-container { width: 100%; height: 5px; background: #eee; margin-bottom: 25px; border-radius: 10px; overflow: hidden;}
-        #timerBar { height: 100%; width: 100%; background: var(--gold); transition: width 0.1s linear; }
-
-        .image-frame { width: 100%; height: 220px; margin-bottom: 25px; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-        .image-frame img { width: 100%; height: 100%; object-fit: cover; }
-
-        .answers { display: grid; gap: 12px; }
-        .answers button {
-            background: #f4f4f4;
-            border: 1px solid #ddd;
-            padding: 16px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 1rem;
-            font-family: 'Lora';
-            border-radius: 4px;
-            transition: 0.2s;
-        }
-        .answers button:hover:not(:disabled) { border-color: var(--gold); background: #fff; }
-
-        .next-btn {
-            background: var(--deep-night);
-            color: white;
-            border: none;
-            padding: 18px;
-            width: 100%;
-            margin-top: 25px;
-            font-family: 'Cinzel';
-            display: none;
-            cursor: pointer;
-        }
-
-        .result-title { font-family: 'Cinzel'; color: var(--gold); font-size: 2rem; }
-        .result-verse { background: #f9f9f9; padding: 20px; border-left: 4px solid var(--gold); font-style: italic; margin: 20px 0; }
-    </style>
+  /* RESPONSIVO */
+  @media (max-width:768px){
+    .hero h1 {font-size:2.2rem;}
+    .sobre-container {flex-direction:column;}
+    nav {display:none;} /* Menu simplificado para mobile */
+  }
+</style>
 </head>
 <body>
 
-<button id="musicToggle" onclick="toggleMusic()">🔊</button>
+<header>
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhaSCr1WiqCjKHNe0eY27ilYNV5Nd09oCIfKKaAdMIzw7gmyytSMNmTemrzvP5AwkC1-ZnvmiEb5-T3xg_-N-1-Zv2W_sEriYxmw5bwErlLcv3YyC7dDaL77uEOrS8xa9ffti1iZtJklv4Bv-SKBfJgMWN4pNH5Mzsiy5_Po9AR5vS-R3pJVkE5V1G5Y4Q/s500/WhatsApp_Image_2025-11-19_at_11.46.36-removebg-preview.png" alt="Logomarca Ione">
+  
+  <nav>
+    <a href="#sobre">Sobre</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#contato">Contato</a>
+  </nav>
+</header>
 
-<div id="startScreen">
-    <div style="border: 2px solid var(--gold); padding: 50px;">
-        <h1>LUX LUCET</h1>
-        <p style="letter-spacing: 3px; opacity: 0.8;">A LUZ BRILHA NAS TREVAS</p>
-        <button class="btn-start" onclick="initGame()">ENTRAR NA LUZ</button>
-    </div>
+<div class="hero">
+  <h1>Excelência em Gestão Pública</h1>
+  <p>Consultoria estratégica para municípios. Foco em legalidade, captação de recursos e resultados.</p>
+  <a href="https://wa.me/5538999999999" class="btn">Fale com um Especialista</a>
 </div>
 
-<div class="quiz-container" id="quizBox">
-    <div class="stats">
-        <span>MISTÉRIO <span id="progress">1</span>/10</span>
-        <span>TEMPO: <span id="timeText">10</span>s</span>
+<section id="sobre">
+  <div class="sobre-container">
+    <div class="sobre-img">
+      <img src="https://placehold.co/600x600/png?text=Foto+da+Ione" alt="Foto de Ione Gonçalves">
     </div>
-    <div class="timer-container"><div id="timerBar"></div></div>
-    <div class="image-frame"><img id="image" src=""></div>
-    <h2 id="question" style="color:#111; font-size: 1.4rem;"></h2>
-    <div class="answers" id="answers"></div>
-    <div id="feedback" style="margin-top: 20px; font-weight: bold; min-height: 1.2em;"></div>
-    <button class="next-btn" id="nextBtn" onclick="nextQ()">AVANÇAR PARA A PRÓXIMA LUZ</button>
-</div>
-
-<audio id="bgMusic" loop src="https://cdn.pixabay.com/audio/2023/07/30/audio_e0908e8569.mp3"></audio>
-<audio id="soundCorrect" src="https://cdn.pixabay.com/audio/2025/10/06/audio_9b61cc485a.mp3"></audio>
-<audio id="soundWrong" src="https://cdn.pixabay.com/audio/2022/03/10/audio_6b59debae7.mp3"></audio>
-
-<script>
-const quizData = [
-    { q: "Qual o Sacramento que nos torna filhos de Deus?", a: ["Batismo", "Crisma", "Eucaristia", "Unção"], c: 0, img: "https://images.a12.com/source/files/c/248514/batismo-batizado-368531_1280-853-0-0.jpg" },
-    { q: "Quantos são os Mandamentos da Lei de Deus?", a: ["7", "10", "12", "5"], c: 1, img: "https://cms-imgp.jw-cdn.org/img/p/502018139/univ/art/502018139_univ_lsr_lg.jpg" },
-    { q: "Quem é o Pai de Jesus na Terra?", a: ["São Pedro", "São Paulo", "São José", "São João"], c: 2, img: "https://files.mormonsud.net/wp-content/uploads/2019/12/jose-e-maria-natal.jpg" },
-    { q: "Qual a principal oração que Jesus nos ensinou?", a: ["Ave Maria", "Pai Nosso", "Credo", "Salve Rainha"], c: 1, img: "https://revistaadventista.com.br/wp-content/uploads/a_oracao_modelo_credito_AdobeStock-1-810x540.jpg" },
-    { q: "Onde Jesus nasceu?", a: ["Nazaré", "Jerusalém", "Belém", "Roma"], c: 2, img: "https://img.freepik.com/vetores-gratis/presepio-da-silhueta-a-noite_52683-51309.jpg?semt=ais_hybrid&w=740&q=80" },
-    { q: "Quem é a Mãe de Jesus?", a: ["Maria Madalena", "Marta", "Maria", "Isabel"], c: 2, img: "https://diocesefranca.org.br/images/20221230092213_SAGRADA-FAMILIA.png" },
-    { q: "Quantos são os Sacramentos da Igreja?", a: ["3", "5", "7", "10"], c: 2, img: "https://saosebastiaopatos.com.br/wp-content/uploads/2024/01/50.reflita.png" },
-    { q: "Qual o livro sagrado dos cristãos?", a: ["Alcorão", "Torá", "Bíblia", "Catecismo"], c: 2, img: "https://i0.wp.com/ssvpcmbh.org.br/wp-content/uploads/2020/09/naom_562b8ba088c49.jpg?fit=1024%2C576&ssl=1" },
-    { q: "Quem foi o primeiro Papa da Igreja?", a: ["São Paulo", "São João", "São Pedro", "São Tiago"], c: 2, img: "https://cooperadoresdaverdade.com/wp-content/uploads/2020/05/O-que-%C3%A9-Patr%C3%ADstica.jpg" },
-    { q: "O que celebramos na Páscoa?", a: ["Nascimento de Jesus", "Ressurreição de Jesus", "Morte de Jesus", "Batismo de Jesus"], c: 1, img: "https://p2.trrsf.com/image/fget/cf/940/0/images.terra.com/2023/04/03/491447970-pascoa-origem-e-significado.jpg" }
-];
-
-let current = 0, score = 0, answered = false, timeLeft = 10, timer;
-
-// FUNÇÃO RANDOM (MISTURAR)
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-// FUNÇÃO LIGAR/DESLIGAR MÚSICA
-function toggleMusic() {
-    const bg = document.getElementById("bgMusic");
-    const btn = document.getElementById("musicToggle");
-    bg.muted = !bg.muted;
-    btn.textContent = bg.muted ? "🔇" : "🔊";
-}
-
-function initGame() {
-    // Ação de Embaralhar antes de começar
-    shuffle(quizData);
-    quizData.forEach(item => {
-        let correctText = item.a[item.c]; 
-        shuffle(item.a);
-        item.c = item.a.indexOf(correctText); 
-    });
-
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("quizBox").style.display = "block";
     
-    const bg = document.getElementById("bgMusic");
-    bg.volume = 0.15;
-    bg.play().catch(() => {});
-    loadQ();
-}
+    <div class="sobre-text">
+      <h2>Sobre Ione Gonçalves</h2>
+      <p>Com mais de 10 anos de experiência sólida no setor público, nossa consultoria nasceu para auxiliar prefeituras e gestores a navegarem pela complexidade da administração pública.</p>
+      <p>Nossa missão é garantir que os recursos sejam aplicados com eficiência e total transparência. Atuamos diretamente na resolução de pendências e na modernização dos processos administrativos.</p>
+      <p><strong>Diferenciais:</strong> Atendimento personalizado e profundo conhecimento da legislação municipal vigente.</p>
+    </div>
+  </div>
+</section>
 
-function loadQ() {
-    answered = false;
-    document.getElementById("nextBtn").style.display = "none";
-    document.getElementById("feedback").textContent = "";
-    document.getElementById("progress").textContent = current + 1;
+<section id="servicos" style="background:#fff;">
+  <h2>Nossos Serviços</h2>
+  <div class="servicos-grid">
     
-    const item = quizData[current];
-    document.getElementById("question").textContent = item.q;
-    document.getElementById("image").src = item.img;
-    
-    const btnBox = document.getElementById("answers");
-    btnBox.innerHTML = "";
-    item.a.forEach((text, i) => {
-        const b = document.createElement("button");
-        b.textContent = text;
-        b.onclick = () => check(i);
-        btnBox.appendChild(b);
-    });
+    <div class="card">
+      <i class="fas fa-file-signature"></i>
+      <h3>Gestão de Convênios</h3>
+      <p>Acompanhamento completo desde o cadastro da proposta até a prestação de contas final, garantindo a aprovação nos órgãos competentes.</p>
+    </div>
 
-    timeLeft = 10;
-    clearInterval(timer);
-    timer = setInterval(() => {
-        timeLeft -= 0.1;
-        document.getElementById("timerBar").style.width = (timeLeft * 10) + "%";
-        document.getElementById("timeText").textContent = Math.ceil(timeLeft);
-        if(timeLeft <= 0) { clearInterval(timer); check(null); }
-    }, 100);
-}
+    <div class="card">
+      <i class="fas fa-chart-line"></i>
+      <h3>Planejamento Estratégico</h3>
+      <p>Desenvolvimento de planos diretores e otimização de recursos municipais para maximizar o impacto das políticas públicas.</p>
+    </div>
 
-function check(idx) {
-    if(answered) return;
-    answered = true;
-    clearInterval(timer);
-    const item = quizData[current];
-    const btns = document.querySelectorAll(".answers button");
-    
-    btns.forEach((b, i) => {
-        b.disabled = true;
-        if(i === item.c) {
-            b.style.background = "#d4edda";
-            b.style.borderColor = "#28a745";
-            b.style.color = "#155724";
-        } else if(i === idx) {
-            b.style.background = "#f8d7da";
-            b.style.borderColor = "#dc3545";
-            b.style.color = "#721c24";
-        }
-    });
+    <div class="card">
+      <i class="fas fa-hand-holding-usd"></i>
+      <h3>Captação de Recursos</h3>
+      <p>Identificação de oportunidades de verbas estaduais e federais, com elaboração técnica de projetos para solicitação.</p>
+    </div>
 
-    if(idx === item.c) {
-        score++;
-        document.getElementById("feedback").textContent = "✨ Luz da Verdade! Acertou.";
-        document.getElementById("feedback").style.color = "#28a745";
-        document.getElementById("soundCorrect").play();
-    } else {
-        document.getElementById("feedback").textContent = "🕊️ Busque a luz do conhecimento.";
-        document.getElementById("feedback").style.color = "#721c24";
-        document.getElementById("soundWrong").play();
-    }
-    document.getElementById("nextBtn").style.display = "block";
-}
+    <div class="card">
+      <i class="fas fa-users-cog"></i>
+      <h3>Assessoria Técnica</h3>
+      <p>Treinamento de equipes e suporte contínuo para secretarias municipais e gabinete do prefeito.</p>
+    </div>
 
-function nextQ() {
-    current++;
-    if(current < quizData.length) loadQ();
-    else showResult();
-}
+  </div>
+</section>
 
-function showResult() {
-    let title, msg, verse, icon;
-    
-    if(score === 10) { 
-        title = "Mestre da Fé"; 
-        icon = "🌟";
-        msg = "Incrível! Sua luz brilha intensamente. Você demonstrou pleno domínio dos ensinamentos!"; 
-        verse = "Lâmpada para os meus pés é a tua palavra e luz para o meu caminho. (Salmos 119:105)"; 
-    }
-    else if(score >= 7) { 
-        title = "Discípulo da Verdade"; 
-        icon = "✨";
-        msg = "Excelente! Você está trilhando um caminho sólido de sabedoria. Continue firme!"; 
-        verse = "Crescei na graça e no conhecimento de nosso Senhor e Salvador Jesus Cristo. (2 Pedro 3:18)"; 
-    }
-    else { 
-        title = "Caminhante da Fé"; 
-        icon = "🕊️";
-        msg = "Cada passo conta! Você iniciou sua jornada. Continue estudando para fortalecer sua chama."; 
-        verse = "Pedi e dar-se-vos-á; buscai e achareis; batei e abrir-se-vos-á. (Mateus 7:7)"; 
-    }
+<section id="contato">
+  <h2>Vamos Transformar sua Gestão?</h2>
+  <p>Entre em contato para uma análise preliminar sem compromisso.</p>
+  
+  <div class="contato-container">
+    <a href="https://wa.me/5538999999999" target="_blank" class="contato-btn">
+      <i class="fab fa-whatsapp"></i> Chamar no WhatsApp
+    </a>
+    <br><br>
+    <p><b>Email:</b> contato@ionegoncalves.com.br</p>
+    <p><b>Localização:</b> Norte de Minas Gerais</p>
+  </div>
+</section>
 
-    document.getElementById("quizBox").innerHTML = `
-        <div style="font-size: 3.5rem; margin-bottom: 5px;">${icon}</div>
-        <div class="result-title">${title}</div>
-        
-        <p style="font-size:1.1rem; margin:10px 0;">Você acendeu <b>${score} de 10</b> luzes.</p>
-        
-        <p style="line-height:1.4; color:#555; font-size: 0.95rem; margin-bottom: 15px;">${msg}</p>
+<footer>
+  © 2026 - Ione Gonçalves Consultoria e Gestão Pública.
+</footer>
 
-        <div style="background: #fdfdfd; padding: 12px; border: 1px solid #eee; border-left: 3px solid var(--gold); margin-bottom: 20px;">
-            <i style="font-size: 0.85rem; color: #666; display: block; line-height: 1.3;">"${verse}"</i>
-        </div>
-        
-        <button class="btn-start" style="width:100%; background:#25d366; color: white; margin-bottom: 10px; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="shareResult()">
-            📲 COMPARTILHAR JORNADA
-        </button>
-
-        <button class="btn-start" style="width:100%; background: #000; color: #ffffff !important; border: none;" onclick="location.reload()">
-            RECOMEÇAR CAMINHADA
-        </button>
-    `;
-}
-function shareResult() {
-    const text = `✨ Lux Lucet ✨\nAlcancei o nível de sabedoria no Quiz de Catequese!\n💡 Acertei ${score} de 10 luzes.\nTeste seus conhecimentos aqui:`;
-    const url = window.location.href;
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text + "\n" + url)}`, '_blank');
-}
-</script>
 </body>
 </html>
-
